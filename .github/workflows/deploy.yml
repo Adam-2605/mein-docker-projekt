@@ -1,4 +1,4 @@
-- name: Deploy to VM via SSH
+ name: Deploy to VM via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
