@@ -24,4 +24,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: Adam2605/adams-nginx:latest
+        tags: adam2605/adams-nginx:latest
