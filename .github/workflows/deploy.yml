@@ -10,30 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
 
-    - name: Deploy to VM via SSH
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          docker stop mein-cloudbroetchen-webserver || true
-          docker rm mein-cloudbroetchen-webserver || true
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
-          docker run -d -p 8080:80 --name mein-cloudbroetchen-webserver ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
+      - name: Deploy to VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker stop mein-cloudbroetchen-webserver || true
+            docker rm mein-cloudbroetchen-webserver || true
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
+            docker run -d -p 8080:80 --name mein-cloudbroetchen-webserver ${{ secrets.DOCKERHUB_USERNAME }}/adams-nginx:latest
